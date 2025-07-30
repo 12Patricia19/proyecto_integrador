@@ -1,0 +1,23 @@
+.menu {
+  background: #282c34;
+  padding: 1rem;
+  display: flex;
+  gap: 2rem;
+}
+
+.menu-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.3rem 1rem;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.menu-link.active {
+  background: #61dafb;
+  color: #222;
+}
+.menu-link:hover {
+  background: #444;
+}
