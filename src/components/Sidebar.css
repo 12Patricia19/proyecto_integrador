@@ -1,6 +1,6 @@
 .sidebar {
   width: 260px;
-  background: #f6f7fa;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
   border-radius: 18px;
   padding: 16px 0;
   display: flex;
@@ -8,10 +8,14 @@
   transition: width 0.2s;
   min-height: 100vh;
   gap: 12px;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
+
 .sidebar.collapsed {
   width: 70px;
 }
+
 .sidebar-top {
   display: flex;
   align-items: center;
@@ -19,17 +23,98 @@
   padding: 0 20px;
   margin-bottom: 18px;
 }
+
 .sidebar-logo {
-  background: #e5e7eb;
+  background: rgba(255,255,255,0.2);
   border: none;
   border-radius: 50%;
   padding: 8px;
   cursor: pointer;
   font-size: 1.4em;
+  color: white;
+  transition: background 0.3s ease;
 }
+
+.sidebar-logo:hover {
+  background: rgba(255,255,255,0.3);
+}
+
 .sidebar-title {
+  font-weight: 700;
+  font-size: 1.1em;
+  color: white;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 20px;
+  margin-bottom: 10px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 12px;
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+}
+
+.user-details {
+  flex: 1;
+}
+
+.user-name {
   font-weight: 600;
+  font-size: 0.9em;
+  color: white;
+  margin-bottom: 2px;
+}
+
+.user-rating {
+  font-size: 0.8em;
+  color: rgba(255,255,255,0.8);
+}
+
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 16px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: rgba(255,255,255,0.8);
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.sidebar-link:hover {
+  background: rgba(255,255,255,0.1);
+  color: white;
+  transform: translateX(4px);
+}
+
+.sidebar-link.active {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.sidebar-link svg {
   font-size: 1.2em;
+  min-width: 20px;
 }
 .sidebar-content {
   display: flex;

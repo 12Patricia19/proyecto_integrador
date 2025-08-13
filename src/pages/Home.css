@@ -1,0 +1,276 @@
+.home-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.hero-section {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.hero-section h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.hero-section p {
+  font-size: 1.2em;
+  opacity: 0.9;
+}
+
+.search-section {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  margin-bottom: 40px;
+}
+
+.search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.search-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.search-input {
+  padding: 12px 16px;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #e74c3c;
+}
+
+.search-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.search-btn, .clear-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-btn {
+  background: #e74c3c;
+  color: white;
+}
+
+.search-btn:hover {
+  background: #c0392b;
+  transform: translateY(-2px);
+}
+
+.clear-btn {
+  background: #f8f9fa;
+  color: #6c757d;
+  border: 2px solid #e1e8ed;
+}
+
+.clear-btn:hover {
+  background: #e9ecef;
+}
+
+.trips-section h2 {
+  font-size: 2em;
+  margin-bottom: 30px;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.loading, .no-trips {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 1.2em;
+  color: #6c757d;
+}
+
+.trips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 25px;
+}
+
+.trip-card {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #f0f0f0;
+}
+
+.trip-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.trip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f8f9fa;
+}
+
+.route {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 1.1em;
+}
+
+.origin {
+  color: #28a745;
+}
+
+.destination {
+  color: #dc3545;
+}
+
+.arrow {
+  color: #6c757d;
+  font-size: 1.2em;
+}
+
+.price {
+  font-size: 1.3em;
+  font-weight: 700;
+  color: #e74c3c;
+}
+
+.trip-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.datetime {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.95em;
+  color: #6c757d;
+}
+
+.driver-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.driver-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.driver-name {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.driver-rating {
+  font-size: 0.9em;
+  color: #ffc107;
+}
+
+.vehicle-info {
+  font-size: 0.95em;
+  color: #6c757d;
+}
+
+.amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.amenity {
+  background: #ffeaa7;
+  color: #d63031;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.85em;
+  font-weight: 500;
+}
+
+.seats-info {
+  font-weight: 600;
+  color: #28a745;
+}
+
+.trip-actions {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.book-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.book-btn:hover:not(:disabled) {
+  background: #218838;
+  transform: translateY(-2px);
+}
+
+.book-btn:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .trips-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .search-inputs {
+    grid-template-columns: 1fr;
+  }
+  
+  .search-buttons {
+    flex-direction: column;
+  }
+  
+  .trip-header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}
