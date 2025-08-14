@@ -1,8 +1,19 @@
+
 import { Router } from "express";
 import { body, param } from "express-validator";
 import * as ctrl from "../controllers/user.controller.js";
 
 const router = Router();
+
+// Login
+router.post(
+  "/login",
+  [
+    body("email").isEmail().withMessage("Email inválido"),
+    body("password").isLength({ min: 6 }).withMessage("Mínimo 6 caracteres")
+  ],
+  ctrl.login
+);
 
 router.get("/", ctrl.getAll);
 

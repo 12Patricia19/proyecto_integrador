@@ -147,14 +147,11 @@ export const mockBookings = [
 
 // Funciones mock para simular llamadas al backend
 export const mockAPI = {
-  // Obtener todos los viajes
   getTrips: () => {
     return new Promise((resolve) => {
       setTimeout(() => resolve(mockTrips), 500);
     });
   },
-
-  // Buscar viajes por origen y destino
   searchTrips: (origin, destination, date) => {
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -167,8 +164,6 @@ export const mockAPI = {
       }, 500);
     });
   },
-
-  // Autenticación
   login: (email, password) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -184,8 +179,6 @@ export const mockAPI = {
       }, 1000);
     });
   },
-
-  // Reservar viaje
   bookTrip: (tripId, seats) => {
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -202,8 +195,6 @@ export const mockAPI = {
       }, 1000);
     });
   },
-
-  // Obtener reservas del usuario
   getUserBookings: () => {
     return new Promise((resolve) => {
       setTimeout(() => resolve(mockBookings), 500);

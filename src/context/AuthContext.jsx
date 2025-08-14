@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { mockAPI } from '../data/mockData';
+import api from '../data/api';
 
 const AuthContext = createContext();
 
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await mockAPI.login(email, password);
+      const response = await api.login(email, password);
       setUser(response.user);
       localStorage.setItem('user', JSON.stringify(response.user));
       localStorage.setItem('token', response.token);

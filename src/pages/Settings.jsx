@@ -4,13 +4,15 @@ import './Settings.css';
 
 export default function Settings() {
   const { user, logout, isAuthenticated } = useAuth();
+
+  console.log(user);
+  
   const [formData, setFormData] = useState({
-    name: user?.name || '',
+    id: user?.id || user?._id || '',
+    nombres: user?.nombres || '',
+    apellidos: user?.apellidos || '',
     email: user?.email || '',
-    phone: user?.phone || '',
-    notifications: true,
-    shareData: false,
-    autoBook: false
+    rol: user?.rol || '',
   });
 
   const handleInputChange = (e) => {
@@ -53,17 +55,38 @@ export default function Settings() {
         <div className="settings-section">
           <h2>👤 Información Personal</h2>
           <div className="form-group">
-            <label htmlFor="name">Nombre completo:</label>
+            <label htmlFor="id">ID:</label>
             <input
-              id="name"
-              name="name"
+              id="id"
+              name="id"
               type="text"
-              value={formData.name}
+              value={formData.id}
+              className="form-input"
+              disabled
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="nombres">Nombres:</label>
+            <input
+              id="nombres"
+              name="nombres"
+              type="text"
+              value={formData.nombres}
               onChange={handleInputChange}
               className="form-input"
             />
           </div>
-          
+          <div className="form-group">
+            <label htmlFor="apellidos">Apellidos:</label>
+            <input
+              id="apellidos"
+              name="apellidos"
+              type="text"
+              value={formData.apellidos}
+              onChange={handleInputChange}
+              className="form-input"
+            />
+          </div>
           <div className="form-group">
             <label htmlFor="email">Email:</label>
             <input
@@ -73,95 +96,20 @@ export default function Settings() {
               value={formData.email}
               onChange={handleInputChange}
               className="form-input"
+              disabled
             />
           </div>
-          
           <div className="form-group">
-            <label htmlFor="phone">Teléfono:</label>
+            <label htmlFor="rol">Rol:</label>
             <input
-              id="phone"
-              name="phone"
-              type="tel"
-              value={formData.phone}
-              onChange={handleInputChange}
+              id="rol"
+              name="rol"
+              type="text"
+              value={formData.rol}
               className="form-input"
+              disabled
             />
           </div>
-        </div>
-
-        <div className="settings-section">
-          <h2>🔔 Notificaciones</h2>
-          <div className="checkbox-group">
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
-                name="notifications"
-                checked={formData.notifications}
-                onChange={handleInputChange}
-              />
-              <span className="checkmark"></span>
-              Recibir notificaciones por email
-            </label>
-          </div>
-        </div>
-
-        <div className="settings-section">
-          <h2>🔒 Privacidad</h2>
-          <div className="checkbox-group">
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
-                name="shareData"
-                checked={formData.shareData}
-                onChange={handleInputChange}
-              />
-              <span className="checkmark"></span>
-              Compartir datos para mejorar el servicio
-            </label>
-          </div>
-        </div>
-
-        <div className="settings-section">
-          <h2>🚗 Preferencias de Viaje</h2>
-          <div className="checkbox-group">
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
-                name="autoBook"
-                checked={formData.autoBook}
-                onChange={handleInputChange}
-              />
-              <span className="checkmark"></span>
-              Reserva automática para rutas frecuentes
-            </label>
-          </div>
-        </div>
-
-        <div className="settings-section">
-          <h2>📊 Estadísticas de Usuario</h2>
-          <div className="stats-grid">
-            <div className="stat-item">
-              <span className="stat-label">Viajes completados:</span>
-              <span className="stat-value">{user.tripsCompleted}</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-label">Calificación promedio:</span>
-              <span className="stat-value">⭐ {user.rating}</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-label">Miembro desde:</span>
-              <span className="stat-value">{user.memberSince}</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="settings-actions">
-          <button onClick={handleSave} className="save-btn">
-            💾 Guardar Cambios
-          </button>
-          <button onClick={handleLogout} className="logout-btn">
-            🚪 Cerrar Sesión
-          </button>
         </div>
       </div>
     </div>

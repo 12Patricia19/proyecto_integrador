@@ -1,3 +1,33 @@
+import jwt from "jsonwebtoken";
+// Login de usuario
+export const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.status(401).json({ message: "Credenciales inválidas" });
+
+    const valid = await bcrypt.compare(password, user.passwordHash);
+    if (!valid) return res.status(401).json({ message: "Credenciales inválidas" });
+
+    // Generar token JWT (puedes cambiar la clave secreta y expiración según tu config)
+    const token = jwt.sign(
+      { id: user._id, email: user.email, rol: user.rol },
+      process.env.JWT_SECRET || "secret123",
+      { expiresIn: "7d" }
+    );
+
+    res.json({
+      token,
+      user: {
+        id: user._id,
+        nombres: user.nombres,
+        apellidos: user.apellidos,
+        email: user.email,
+        rol: user.rol
+      }
+    });
+  } catch (e) { next(e); }
+};
 import { validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";

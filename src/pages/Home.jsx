@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { mockAPI } from '../data/mockData';
 import { useAuth } from '../context/AuthContext';
+import api from '../data/api';
 import './Home.css';
 
 export default function Home() {
@@ -12,13 +12,15 @@ export default function Home() {
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    loadTrips();
+  loadTrips();
   }, []);
 
   const loadTrips = async () => {
     try {
       setLoading(true);
-      const tripsData = await mockAPI.getTrips();
+      const tripsData = await api.getAllTrips();
+      console.log(tripsData);
+
       setTrips(tripsData);
     } catch (error) {
       console.error('Error cargando viajes:', error);
@@ -29,10 +31,16 @@ export default function Home() {
 
   const handleSearch = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      setLoading(true);
-      const searchResults = await mockAPI.searchTrips(searchOrigin, searchDestination, searchDate);
-      setTrips(searchResults);
+      // Filtrar localmente sobre tripsArray
+      const filtered = tripsArray.filter(trip => {
+        const matchOrigin = !searchOrigin || (trip.origen && trip.origen.toLowerCase().includes(searchOrigin.toLowerCase()));
+        const matchDestination = !searchDestination || (trip.destino && trip.destino.toLowerCase().includes(searchDestination.toLowerCase()));
+        const matchDate = !searchDate || (trip.fechaHoraSalida && new Date(trip.fechaHoraSalida).toISOString().slice(0,10) === searchDate);
+        return matchOrigin && matchDestination && matchDate;
+      });
+      setTrips(filtered);
     } catch (error) {
       console.error('Error buscando viajes:', error);
     } finally {
@@ -40,29 +48,14 @@ export default function Home() {
     }
   };
 
-  const handleBookTrip = async (tripId, seats = 1) => {
-    if (!isAuthenticated) {
-      alert('Debes iniciar sesión para reservar un viaje');
-      return;
-    }
-
-    try {
-      const booking = await mockAPI.bookTrip(tripId, seats);
-      alert(`¡Viaje reservado! ID de reserva: ${booking.id}`);
-      // Actualizar la lista de viajes para reflejar los asientos disponibles
-      loadTrips();
-    } catch (error) {
-      console.error('Error reservando viaje:', error);
-      alert('Error al reservar el viaje');
-    }
-  };
-
   const clearSearch = () => {
-    setSearchOrigin('');
-    setSearchDestination('');
-    setSearchDate('');
-    loadTrips();
+  setSearchOrigin('');
+  setSearchDestination('');
+  setSearchDate('');
+  loadTrips();
   };
+
+  const tripsArray = Array.isArray(trips) ? trips : [];
 
   return (
     <div className="home-container">
@@ -111,58 +104,33 @@ export default function Home() {
         
         {loading ? (
           <div className="loading">Cargando viajes...</div>
-        ) : trips.length === 0 ? (
+        ) : tripsArray.length === 0 ? (
           <div className="no-trips">No se encontraron viajes disponibles</div>
         ) : (
           <div className="trips-grid">
-            {trips.map(trip => (
-              <div key={trip.id} className="trip-card">
+            {tripsArray.map(trip => (
+              <div key={trip._id} className="trip-card">
                 <div className="trip-header">
                   <div className="route">
-                    <span className="origin">{trip.origin}</span>
+                    <span className="origin">{trip.origen || 'Sin origen'}</span>
                     <span className="arrow">→</span>
-                    <span className="destination">{trip.destination}</span>
+                    <span className="destination">{trip.destino || 'Sin destino'}</span>
                   </div>
-                  <div className="price">€{trip.pricePerSeat}/persona</div>
+                  <div className="estado">{trip.estado || 'Sin estado'}</div>
                 </div>
-                
                 <div className="trip-details">
                   <div className="datetime">
-                    <span>📅 {trip.departureDate}</span>
-                    <span>🕐 {trip.departureTime} - {trip.arrivalTime}</span>
+                    <span>📅 {trip.fechaHoraSalida ? new Date(trip.fechaHoraSalida).toLocaleDateString('es-EC', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Sin fecha'}</span>
+                    <span style={{ marginLeft: 8 }}>
+                      🕒 {trip.fechaHoraSalida ? new Date(trip.fechaHoraSalida).toLocaleTimeString('es-EC', { hour: '2-digit', minute: '2-digit' }) : ''}
+                    </span>
                   </div>
-                  
-                  <div className="driver-info">
-                    <img src={trip.driver.avatar} alt={trip.driver.name} className="driver-avatar" />
-                    <div>
-                      <div className="driver-name">{trip.driver.name}</div>
-                      <div className="driver-rating">⭐ {trip.driver.rating}</div>
-                    </div>
-                  </div>
-                  
-                  <div className="vehicle-info">
-                    <span>🚗 {trip.vehicle.brand} {trip.vehicle.model} ({trip.vehicle.color})</span>
-                  </div>
-                  
-                  <div className="amenities">
-                    {trip.amenities.map((amenity, index) => (
-                      <span key={index} className="amenity">{amenity}</span>
-                    ))}
-                  </div>
-                  
                   <div className="seats-info">
-                    <span>💺 {trip.availableSeats} asientos disponibles</span>
+                    <span>💺 {typeof trip.cupos === 'number' ? trip.cupos : 'N/A'} cupos disponibles</span>
                   </div>
-                </div>
-                
-                <div className="trip-actions">
-                  <button 
-                    onClick={() => handleBookTrip(trip.id)}
-                    className="book-btn"
-                    disabled={trip.availableSeats === 0}
-                  >
-                    {trip.availableSeats === 0 ? 'Sin asientos' : 'Reservar'}
-                  </button>
+                  <div className="creador-info">
+                    <span>👤 <b>{trip.creador?.nombres} {trip.creador?.apellidos}</b> <span style={{color:'#888', fontSize:'0.9em'}}>({trip.creador?.email})</span></span>
+                  </div>
                 </div>
               </div>
             ))}
