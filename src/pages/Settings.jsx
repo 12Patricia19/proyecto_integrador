@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import './Settings.css';
 
 export default function Settings() {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   console.log(user);
   
@@ -21,16 +21,6 @@ export default function Settings() {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
-  };
-
-  const handleSave = () => {
-    alert('Configuración guardada exitosamente');
-  };
-
-  const handleLogout = () => {
-    if (window.confirm('¿Estás seguro de que quieres cerrar sesión?')) {
-      logout();
-    }
   };
 
   if (!isAuthenticated) {

@@ -15,6 +15,20 @@ router.post(
   ctrl.login
 );
 
+// Registro (alias para crear usuario)
+router.post(
+  "/register",
+  [
+    body("nombre").trim().notEmpty().withMessage("Nombre es requerido"),
+    body("apellido").trim().notEmpty().withMessage("Apellido es requerido"),
+    body("email").isEmail().withMessage("Email inválido"),
+    body("password").isLength({ min: 6 }).withMessage("Mínimo 6 caracteres"),
+    body("telefono").trim().notEmpty().withMessage("Teléfono es requerido"),
+    body("vehiculo").optional()
+  ],
+  ctrl.create
+);
+
 router.get("/", ctrl.getAll);
 
 router.get("/:id", [param("id").isMongoId()], ctrl.getById);

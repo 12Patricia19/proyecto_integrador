@@ -5,9 +5,11 @@ import Sidebar from "./components/Sidebar";
 import Home from "./pages/Home";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
-import UserAdmin from "./pages/UserAdmin";
-import TripAdmin from "./pages/TripAdmin";
-import UserSingle from "./pages/UserSingle";
+import Register from "./pages/Register";
+import MyTrips from "./pages/MyTrips";
+import MyRequests from "./pages/MyRequests";
+import TripDetails from "./pages/TripDetails";
+import CreateTrip from "./pages/CreateTrip";
 
 function App() {
   return (
@@ -19,10 +21,12 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/my-trips" element={<MyTrips />} />
+              <Route path="/my-requests" element={<MyRequests />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/admin/users" element={<UserAdmin />} />
-              <Route path="/admin/trips" element={<TripAdmin />} />
-              <Route path="/admin/user" element={<UserSingle />} />
+              <Route path="/trip/:id" element={<TripDetails />} />
+              <Route path="/create-trip" element={<CreateTrip />} />
             </Routes>
           </div>
         </div>

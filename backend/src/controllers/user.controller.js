@@ -1,13 +1,25 @@
 import jwt from "jsonwebtoken";
+import { validationResult } from "express-validator";
+import bcrypt from "bcryptjs";
+import User from "../models/user.model.js";
+
 // Login de usuario
 export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+    console.log('Login attempt for email:', email);
+    
     const user = await User.findOne({ email });
-    if (!user) return res.status(401).json({ message: "Credenciales inválidas" });
+    if (!user) {
+      console.log('User not found for email:', email);
+      return res.status(401).json({ message: "Credenciales inválidas" });
+    }
 
     const valid = await bcrypt.compare(password, user.passwordHash);
-    if (!valid) return res.status(401).json({ message: "Credenciales inválidas" });
+    if (!valid) {
+      console.log('Invalid password for user:', email);
+      return res.status(401).json({ message: "Credenciales inválidas" });
+    }
 
     // Generar token JWT (puedes cambiar la clave secreta y expiración según tu config)
     const token = jwt.sign(
@@ -16,6 +28,7 @@ export const login = async (req, res, next) => {
       { expiresIn: "7d" }
     );
 
+    console.log('Login successful for user:', email);
     res.json({
       token,
       user: {
@@ -26,11 +39,11 @@ export const login = async (req, res, next) => {
         rol: user.rol
       }
     });
-  } catch (e) { next(e); }
+  } catch (e) { 
+    console.error('Login error:', e);
+    next(e); 
+  }
 };
-import { validationResult } from "express-validator";
-import bcrypt from "bcryptjs";
-import User from "../models/user.model.js";
 
 export const getAll = async (req, res, next) => {
   try {
@@ -52,14 +65,38 @@ export const create = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-    const { nombres, apellidos, email, password, rol } = req.body;
+    const { 
+      nombre, apellido, nombres, apellidos, 
+      email, password, telefono, vehiculo, rol 
+    } = req.body;
+    
     const exists = await User.findOne({ email });
     if (exists) return res.status(409).json({ message: "Email ya registrado" });
 
     const passwordHash = await bcrypt.hash(password, 10);
-    const user = await User.create({ nombres, apellidos, email, passwordHash, rol });
+    
+    // Usar nombres/apellidos del frontend o del backend (compatibilidad)
+    const userData = {
+      nombres: nombres || nombre,
+      apellidos: apellidos || apellido,
+      email,
+      passwordHash,
+      rol: rol || "estudiante",
+      ...(telefono && { telefono }),
+      ...(vehiculo && Object.keys(vehiculo).length > 0 && { vehiculo })
+    };
+
+    const user = await User.create(userData);
+    
     res.status(201).json({
-      id: user._id, nombres: user.nombres, apellidos: user.apellidos, email: user.email, rol: user.rol
+      success: true,
+      user: {
+        id: user._id,
+        nombres: user.nombres,
+        apellidos: user.apellidos,
+        email: user.email,
+        rol: user.rol
+      }
     });
   } catch (e) { next(e); }
 };

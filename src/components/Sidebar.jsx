@@ -1,71 +1,82 @@
-
-import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { FiMenu, FiHome, FiGrid, FiSettings, FiLogIn, FiUser } from "react-icons/fi";
+import React from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import "./Sidebar.css";
+import './Sidebar.css';
 
-export default function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false);
-  const { isAuthenticated, user, logout } = useAuth();
+const Sidebar = () => {
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  const isActive = (path) => {
+    return location.pathname === path ? 'active' : '';
+  };
 
   return (
-    <aside className={`sidebar${collapsed ? " collapsed" : ""}`}>
-      <div className="sidebar-top">
-        <button className="sidebar-logo" aria-label="toggle menu" onClick={() => setCollapsed(!collapsed)}>
-          <FiMenu />
-        </button>
-        {!collapsed && <span className="sidebar-title">🚗 Viajes Compartidos</span>}
-      </div>
-      {isAuthenticated && !collapsed && (
-        <div className="user-info">
-          <div className="user-details">
-            <div className="user-name">{user.nombres} {user.apellidos}</div>
-            <div className="user-email">{user.email}</div>
-            <div className="user-rol">Rol: {user.rol}</div>
+    <div className="sidebar">
+      <div className="sidebar-header">
+        <h2>🚗 PUCE CarShare</h2>
+        {user && (
+          <div className="user-info">
+            <span>{user.nombres || user.name || 'Usuario'}</span>
           </div>
+        )}
+      </div>
+
+      <nav className="sidebar-nav">
+        <ul>
+          <li>
+            <Link to="/" className={isActive('/')}>
+              <span className="icon">🏠</span>
+              Inicio
+            </Link>
+          </li>
+          
+          <li>
+            <Link to="/create-trip" className={isActive('/create-trip')}>
+              <span className="icon">✈️</span>
+              Crear Viaje
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/my-trips" className={isActive('/my-trips')}>
+              <span className="icon">🚗</span>
+              Mis Viajes
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/my-requests" className={isActive('/my-requests')}>
+              <span className="icon">�</span>
+              Mis Solicitudes
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/settings" className={isActive('/settings')}>
+              <span className="icon">⚙️</span>
+              Configuración
+            </Link>
+          </li>
+        </ul>
+      </nav>
+
+      {user && (
+        <div className="sidebar-footer">
+          <button onClick={handleLogout} className="logout-btn">
+            <span className="icon">🚪</span>
+            Cerrar Sesión
+          </button>
         </div>
       )}
-      <nav className="sidebar-content">
-        <NavLink to="/" end className="sidebar-link">
-          <FiHome />
-          {!collapsed && <span>Viajes Disponibles</span>}
-        </NavLink>
-        {isAuthenticated ? (
-          <>
-            <NavLink to="/settings" className="sidebar-link">
-              <FiSettings />
-              {!collapsed && <span>Configuración</span>}
-            </NavLink>
-            <NavLink to="/admin/users" className="sidebar-link">
-              <FiUser />
-              {!collapsed && <span>Usuarios</span>}
-            </NavLink>
-            <NavLink to="/admin/trips" className="sidebar-link">
-              <FiGrid />
-              {!collapsed && <span>Viajes</span>}
-            </NavLink>
-            <NavLink to="/admin/user" className="sidebar-link">
-              <FiUser />
-              {!collapsed && <span>Buscar Usuario</span>}
-            </NavLink>
-            <button
-              className="sidebar-link logout-btn"
-              style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', marginTop: '1rem' }}
-              onClick={() => { logout(); navigate('/login'); }}
-            >
-              <FiLogIn style={{ transform: 'rotate(180deg)' }} />
-              {!collapsed && <span>Cerrar Sesión</span>}
-            </button>
-          </>
-        ) : (
-          <NavLink to="/login" className="sidebar-link">
-            <FiLogIn />
-            {!collapsed && <span>Iniciar Sesión</span>}
-          </NavLink>
-        )}
-      </nav>
-    </aside>
+    </div>
   );
-}
+};
+
+export default Sidebar;
